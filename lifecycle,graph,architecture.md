@@ -366,3 +366,22 @@ terraform graph | dot -Tsvg > graph.svg
 | Written in        | Go language (fast & secure)         | GoLang          |
 
 ---
+
+## 🆚 Docker vs Packer – Easy Comparison
+
+| Feature                        | **Docker** 🐳                              | **Packer** 📦                               |
+| ------------------------------ | ------------------------------------------ | ------------------------------------------- |
+| **Purpose**                    | Runs applications in **containers**        | Builds **machine images** (like AMIs, VMs)  |
+| **Use Case**                   | Used to package and run lightweight apps   | Used to create pre-baked server images      |
+| **Output**                     | Docker Image (for containers)              | VM Image (e.g., AWS AMI, Vagrant box, etc.) |
+| **Example Usage**              | Running Node.js app in a container         | Creating a custom Ubuntu image with Apache  |
+| **Runs on**                    | Docker Engine (container runtime)          | No runtime needed after image is built      |
+| **Provisioning**               | Not for full OS setup                      | Supports shell, Ansible, Chef, etc.         |
+| **Speed**                      | Very fast startup (containers)             | Slower (full VM build)                      |
+| **Integration with Terraform** | Terraform can use Docker to run containers | Terraform can use Packer-built AMIs         |
+| **Best For**                   | Microservices, CI/CD, DevOps pipelines     | Immutable infrastructure, golden images     |
+
+
+### 🗣 How to say in an interview:
+
+> “Docker is used to **run applications in containers**, while Packer is used to **build machine images** like AMIs. I use Docker for development and microservices. I use Packer when I need full server images ready to be launched.”
