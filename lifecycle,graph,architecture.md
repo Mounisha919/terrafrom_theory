@@ -312,18 +312,18 @@ terraform graph | dot -Tsvg > graph.svg
 🛠 It is written in **Go** and compiled into a fast, lightweight binary.
 
 🗣 *“Terraform Core is like the brain — it reads config and tells plugins what to do.”*
+> “Terraform Core reads the config and plans what to do. It then sends instructions to the plugin.”
+
 
 ---
 
 ### 2️⃣ **Terraform Plugins**
-
-> "Terraform Plugins
->
-> * expose an implementation for a specific service, or provisioner"
-
-✅ **Explanation:**
-
-* Plugins are the **workers** — they do the actual job.
+* Plugins are the **workers**.
+* They actually talk to the cloud provider (like AWS, Azure, GCP).
+* For example:
+  * AWS plugin talks to AWS to create EC2 or S3.
+  * Azure plugin talks to Azure to create a VM or resource group.
+* Plugins do what the Core tells them to do.
 * Types of plugins:
 
   * **Provider Plugins** (e.g., AWS, Azure, GCP, MySQL)
@@ -342,69 +342,11 @@ terraform graph | dot -Tsvg > graph.svg
 
 ---
 
-### ✅ Summary Table
-
-| Component          | Role                                                     | Example                    |
-| ------------------ | -------------------------------------------------------- | -------------------------- |
-| **Terraform Core** | Main engine – parses config, creates plan, calls plugins | Built-in by HashiCorp      |
-| **Plugins**        | Actual executors – talk to AWS, GCP, etc.                | AWS, Azure, Docker plugins |
-| **RPC**            | Protocol used between Core & Plugins                     | Remote function calls      |
-| **Written In**     | Core & Plugins are written in Go                         | Compiled and fast          |
-
----
-
 ### 🗣 How to Explain in Interview:
 
 > “Terraform is split into Core and Plugins. Core handles reading code and creating the plan. Plugins do the actual work like talking to AWS or GCP. They communicate using RPC. This design makes Terraform powerful and flexible.”
 
----
 
-### 📚 Terraform is divided into 2 main parts:
-
----
-
-### 1️⃣ **Terraform Core**
-
-🖼️ From image:
-
-> "*uses remote procedure calls (RPC) to communicate with Terraform Plugins*"
-
-> "*Terraform Core is a statically-compiled binary written in the Go programming language*"
-
-✅ **Easy Explanation:**
-
-* Core is the **brain** of Terraform.
-* It **reads your `.tf` files**, understands what you want to build (like EC2, VPC).
-* Then it sends instructions to the plugins.
-* It talks to plugins using **RPC** (like sending a message to a worker).
-
-🗣 **How to say in interview:**
-
-> “Terraform Core reads the config and plans what to do. It then sends instructions to the plugin.”
-
----
-
-### 2️⃣ **Terraform Plugins**
-
-🖼️ From image:
-
-> "*expose an implementation for a specific service or provisioner*"
-
-✅ **Easy Explanation:**
-
-* Plugins are the **workers**.
-* They actually talk to the cloud provider (like AWS, Azure, GCP).
-* For example:
-
-  * AWS plugin talks to AWS to create EC2 or S3.
-  * Azure plugin talks to Azure to create a VM or resource group.
-* Plugins do what the Core tells them to do.
-
-🗣 **How to say in interview:**
-
-> “Plugins are like helpers that create resources in AWS, Azure, etc., based on Core’s plan.”
-
----
 
 ### 🎯 What Happens in the Background?
 
