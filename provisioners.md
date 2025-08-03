@@ -732,3 +732,118 @@ resource "null_resource" "setup" {
 | Complex logic like multiple provisioners   | `null_resource`                 |
 
 ---
+Here’s a clean, **README-style explanation** of `terraform_data` vs `null_resource` in Terraform — beginner-friendly and ready for documentation or interviews:
+
+---
+
+# 📘 Terraform: `terraform_data` vs `null_resource` — Easy Explanation
+
+## ✅ 1. What is `null_resource`?
+
+### 🔹 Definition:
+
+A **dummy Terraform resource** that performs **side tasks** like running scripts, copying files, or executing shell commands.
+
+### 🔧 Used For:
+
+* Running `local-exec`, `remote-exec`, or `file` provisioners
+* Post-deployment scripts (e.g., installing packages on a VM)
+* Workarounds for Terraform limitations
+* Force re-execution with `triggers`
+
+### 🔧 Example:
+
+```hcl
+resource "null_resource" "example" {
+  provisioner "local-exec" {
+    command = "echo Hello from null_resource"
+  }
+
+  triggers = {
+    always_run = timestamp()
+  }
+}
+```
+
+---
+
+## ✅ 2. What is `terraform_data`?
+
+### 🔹 Definition:
+
+A **modern built-in resource** (introduced in Terraform v1.4) designed to **replace `null_resource`** for executing provisioners in a more structured and idiomatic way.
+
+### 🔧 Used For:
+
+* Same use cases as `null_resource`
+* Cleaner structure using **`input`** instead of **`triggers`**
+* Recommended for **new Terraform code**
+
+### 🔧 Example:
+
+```hcl
+resource "terraform_data" "example" {
+  input = {
+    script_version = "1.0.0"
+  }
+
+  provisioner "local-exec" {
+    command = "echo Hello from terraform_data"
+  }
+}
+```
+
+---
+
+## 📊 Easy Difference Table
+
+| Feature                     | `null_resource`          | `terraform_data`           |
+| --------------------------- | ------------------------ | -------------------------- |
+| ✅ Purpose                   | Run provisioners/scripts | Run provisioners/scripts   |
+| 🛠️ Creates real infra?     | ❌ No                     | ❌ No                       |
+| 📦 Introduced in            | Old (pre-1.0)            | ✅ Terraform v1.4+          |
+| 🔁 Re-run on change?        | Yes (via `triggers`)     | Yes (via `input`)          |
+| 📐 Input Structure          | String map               | Structured object          |
+| 🚀 Recommended for new use? | ❌ No                     | ✅ Yes                      |
+| 🧪 Ideal for                | Legacy or quick hacks    | Modern, clean provisioning |
+
+---
+
+## 💡 When to Use What?
+
+| Scenario                                          | Use This                           |
+| ------------------------------------------------- | ---------------------------------- |
+| Terraform version ≥ 1.4                           | ✅ `terraform_data`                 |
+| You want cleaner, structured configuration        | ✅ `terraform_data`                 |
+| Maintaining old codebase                          | ✅ `null_resource`                  |
+| Need to rerun based on file/script/version change | ✅ Both (use `input` or `triggers`) |
+
+---
+
+## 🧠 Super Easy Summary
+
+| Question                        | Answer              |
+| ------------------------------- | ------------------- |
+| Do both run scripts/commands?   | ✅ Yes               |
+| Do they create cloud resources? | ❌ No                |
+| Which one is newer & better?    | ✅ `terraform_data`  |
+| Is `null_resource` still valid? | ✅ Yes (legacy only) |
+
+---
+
+## 📁 Notes for Usage
+
+* **Provisioners** inside both can be:
+
+  * `local-exec` (run command locally)
+  * `remote-exec` (run on remote VM)
+  * `file` (copy file to remote)
+
+* If you need to **force re-run**, use:
+
+  * `triggers` in `null_resource`
+  * `input` value change in `terraform_data`
+
+---
+
+Let me know if you’d like a visual comparison or a diagram to explain it further!
