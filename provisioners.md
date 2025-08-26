@@ -846,4 +846,84 @@ resource "terraform_data" "example" {
 
 ---
 
-Let me know if you’d like a visual comparison or a diagram to explain it further!
+# 📘 Terraform `triggers` – Easy Guide
+
+## 🎯 What is `triggers`?
+
+* In Terraform, the `triggers` argument (inside a `null_resource`) tells Terraform **when to re-run the provisioner**, even if the resource itself has not changed.
+
+---
+
+## 🤔 Why use it?
+
+* By default, provisioners run **only once** (first `apply`).
+* Use `triggers` when you need Terraform to re-run because of:
+
+  * Script updates
+  * Version changes
+  * Manual force execution
+
+---
+
+## 🛠️ Example Without `triggers`
+
+```hcl
+resource "null_resource" "example" {
+  provisioner "local-exec" {
+    command = "echo Running setup"
+  }
+}
+```
+
+🔁 Runs **only once**.
+❌ Changing a file or variable later will NOT re-run.
+
+---
+
+## ✅ Example With `triggers`
+
+```hcl
+resource "null_resource" "example" {
+  provisioner "local-exec" {
+    command = "echo Running setup"
+  }
+
+  triggers = {
+    version = "v1.0"
+  }
+}
+```
+
+🎯 If you change `v1.0` → `v1.1`, Terraform detects the change and re-runs the provisioner.
+
+---
+
+## 💡 Trigger on File Changes
+
+```hcl
+triggers = {
+  script_hash = filesha1("setup.sh")
+}
+```
+
+✅ Re-runs provisioner **only when the script file changes**.
+
+---
+
+## 📋 Summary Table
+
+| Feature          | What It Does                           |
+| ---------------- | -------------------------------------- |
+| `triggers` block | Forces a `null_resource` to re-run     |
+| Key-Value pairs  | Any change = re-run triggered          |
+| Common uses      | Versioning, file changes, manual force |
+| Works in         | `null_resource` only (not others)      |
+
+---
+
+## 🗣️ Interview-Friendly Answer
+
+👉 *“In Terraform, the `triggers` argument inside a `null_resource` is used to re-run provisioners whenever specified values change, such as version numbers or file hashes. It’s mainly used for tasks like re-running scripts on file changes, version updates, or forcing execution when needed.”*
+
+---
+
